@@ -111,9 +111,9 @@ function _display_modal(college, depression, population, top_words, confessions)
     var basic_link = "https://twitter.com/intent/tweet?url=https://uplyft.world&hashtags="
     var links = ""
     for (var i = 0; i < top_words.length; i++){
-        links.concat("<a href="+basic_link+ top_words[i]">"+top_words[i]+"</a>")
+        links += ("<a href="+basic_link+top_words[i]+" target==\"blank\">"+top_words[i]+"</a>"+((i != (top_words.length-1))?", ":""))
     }
-    html_body = ("<p><strong>Students:</strong> "+population+"</p><p><strong>Common Words:</strong>"+basic_links+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\"><li>"+confessions.join("</li><li>")+"</li></ul>").replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****")
+    html_body = ("<p><strong>Students:</strong> "+population+"</p><p><strong>Common Words: </strong>"+links+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\"><li>"+confessions.join("</li><li>")+"</li></ul>").replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****")
     $("#exampleModal").find('.modal-body').html(html_body);
     $("#exampleModal").modal("show");
 }
