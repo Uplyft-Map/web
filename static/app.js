@@ -64,6 +64,7 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
         lst.push(obj[i].name);
         lst.push(obj[i].depression);
         lst.push(obj[i].size);
+        lst.push(obj[i].top_words)
         //console.log(lst)
         coords.push(lst);
     }
@@ -95,19 +96,25 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
             .on("mouseover", function(d) {d3.select(this).style("opacity", 1)})
             .on("mouseout", function(d) {d3.select(this).style("opacity", 0)})
             .text(function (d) { return d[2]+"\n"+(d[3]*10).toFixed(1); })
-            .on("click", function(d) {display_modal(d[2], d[3], d[4]);});
+            .on("click", function(d) {display_modal(d[2], d[3], d[4], d[5]);});
 
 });});
 
-function display_modal(college, depression, population) {
+function display_modal(college, depression, population, top_words) {
     $.getJSON(API_URL+"getConfessions/"+college+"/5", function(data) {
-        _display_modal(college, depression, population, data);
+        _display_modal(college, depression, population, top_words, data);
     });
 }
 
-function _display_modal(college, depression, population, confessions) {
+function _display_modal(college, depression, population, top_words, confessions) {
     $("#exampleModal").find('.modal-title').text(college + " ("+(depression*10).toFixed(1)+" negative)");
-    $("#exampleModal").find('.modal-body').html(("<p><strong>Students:</strong> "+population+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\"><li>"+confessions.join("</li><li>")+"</li></ul>").replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****"));
+    var basic_link = "https://twitter.com/intent/tweet?url=https://uplyft.world&hashtags="
+    var links = ""
+    for (var i = 0; i < top_words.length; i++){
+        links.concat("<a href="+basic_link+ top_words[i]">"+top_words[i]+"</a>")
+    }
+    html_body = ("<p><strong>Students:</strong> "+population+"</p><p><strong>Common Words:</strong>"+basic_links+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\"><li>"+confessions.join("</li><li>")+"</li></ul>").replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****")
+    $("#exampleModal").find('.modal-body').html(html_body);
     $("#exampleModal").modal("show");
 }
 

@@ -19,9 +19,9 @@ conn.close()
 def main():
     return render_template("index.html")
 
-@app.route('/chat')
-def chat():
-    return render_template("chat.html")
+@app.route('/graph')
+def graph():
+    return render_template("graph.html")
 
 @app.route('/getData', methods=['GET'])
 def get_data():
