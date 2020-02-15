@@ -32,6 +32,9 @@
   stroke-linecap: round;
   pointer-events: none;
 }
+#horseshit {
+    margin-top: 12px;
+}
 
 li:nth-child(odd) { background: #D3D3D3; }
 
@@ -59,7 +62,7 @@ li:nth-child(odd) { background: #D3D3D3; }
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-3">
-          <div class="card" style="width: 18rem; height: 100%;">
+          <div class="card" style="width: 20rem; height: 100%;" id = "horseshit">
             <div class="card-body">
               <h5 class="card-title">Social Feed</h5>
               <ul class="card-text pre-scrollable list-unstyled" id="messages">
@@ -89,7 +92,7 @@ li:nth-child(odd) { background: #D3D3D3; }
     </div>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
-    <script src="{{ url_for('static', filename='app.js')}}"></script>    
+    <script src = "/static/app.js"></script>
 </body>
 </html>
 {% endblock %}
