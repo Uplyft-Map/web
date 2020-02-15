@@ -6,7 +6,7 @@ import pandas as pd
 COLLEGE_CSV = 'school_confessions.csv'
 CONFESSION_PICKLE = 'fb-scraper/school_confessions.pickle'
 DEPRESSION_CSV = 'nlp/school_indices.csv'
-TOP_WORDS_CSV = 'nlp/top_words.csv'
+TOP_WORDS_CSV = 'nlp/top_phrases.csv'
 
 conn = sqlite3.connect('database.db')
 

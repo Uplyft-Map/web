@@ -120,7 +120,7 @@ function _display_modal(college, depression, population, top_words, confessions)
     for (var i = 0; i < top_words.length; i++){
         links += ("<a href="+basic_link+top_words[i]+" target==\"blank\">"+top_words[i]+"</a>"+((i != (top_words.length-1))?", ":""))
     }
-    html_body = ("<p><strong>Students:</strong> "+population+"</p><p><strong>Common Words: </strong>"+links+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\"><li>"+confessions.join("</li><li>")+"</li></ul>").replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****")
+    html_body = ("<p><strong>Students:</strong> "+population+"</p><p><strong>Common Words: </strong>"+links+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\"><li>"+confessions.join("</li><li>").replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****")+"</li></ul>")
     $("#exampleModal").find('.modal-body').html(html_body);
     $("#exampleModal").modal("show");
 }
