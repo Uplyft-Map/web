@@ -12,10 +12,12 @@ $(function () {
     socket.on('rx-msg', function(msg){
       console.log(msg);
       if (msg[1] != socket.io.engine.id) {
-        $('#messages').prepend($('<li>').text(msg[0]));
+        $('#messages').append($('<li>').text(msg[0]));
       } else {
-        $('#messages').prepend($('<li style="background: #b3e6ff;">').text('Me: '+msg[0]));
+        $('#messages').append($('<li style="background: #b3e6ff;">').text('Me: '+msg[0]));
       }
+      var messageBody = document.querySelector('#messages');
+      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     });
   });
 
