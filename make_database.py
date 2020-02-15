@@ -1,9 +1,11 @@
 import sqlite3
 import csv
 import pickle
+import pandas as pd
 
 COLLEGE_CSV = 'school_confessions.csv'
 CONFESSION_PICKLE = 'fb-scraper/school_confessions.pickle'
+DEPRESSION_CSV = 'nlp/school_indices.csv'
 
 conn = sqlite3.connect('database.db')
 
@@ -25,7 +27,10 @@ with open(COLLEGE_CSV, 'r') as csvfile:
     for row in rea:
         if row['School Name'] in SCHOOL_DICT:
             continue
-        SCHOOL_DICT[row['School Name']] = ([int(row['School Size'].replace(',' ,'')), float(row['Latitude (GPS)']), float(row['Longitude (GPS)'])])
+        try:
+            SCHOOL_DICT[row['School Name']] = ([int(row['School Size'].replace(',' ,'')), float(row['Latitude (GPS)']), float(row['Longitude (GPS)'])])
+        except:
+            continue
 
 # Populate database
 print("Populating database with colleges...")
@@ -38,16 +43,35 @@ for school in SCHOOL_DICT:
 
 conn.commit()
 
+print("Loading pandas")
+a = pd.read_csv(DEPRESSION_CSV)
+for idx, row in a.iterrows():
+    dep_score = row['Index']
+    college = row['School']
+    try:
+        resp = cursor.execute("SELECT confession FROM confessions INNER JOIN colleges s WHERE college_id = s.id AND name=?", (college,))
+
+        confs = [conf[0] for conf in resp.fetchall()]
+
+        cursor.execute("UPDATE colleges SET depression=? WHERE name=?", (dep_score, college))
+    except:
+        continue
+
+conn.commit()
+
 print("Populating confessions...")
 with open(CONFESSION_PICKLE, 'rb') as f:
     confs = pickle.load(f)
 
 for school in confs:
-    school_id = cursor.execute(f"SELECT id FROM colleges WHERE name=\"{school}\"").fetchall()[0][0]
-    cmd = "INSERT INTO confessions (college_id, confession) VALUES (?, ?)"
+    try:
+        school_id = cursor.execute(f"SELECT id FROM colleges WHERE name=\"{school}\"").fetchall()[0][0]
+        cmd = "INSERT INTO confessions (college_id, confession) VALUES (?, ?)"
 
-    for confession in confs[school]:
-        cursor.execute(cmd, (school_id, confession))
+        for confession in confs[school]:
+            cursor.execute(cmd, (school_id, confession))
+    except:
+        continue
 
 conn.commit()
 
