@@ -1,9 +1,11 @@
 from flask import Flask, render_template, url_for, redirect, send_from_directory, jsonify
+from flask_socketio import SocketIO, emit, send, ConnectionRefusedError
 import sqlite3
 import logging
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
+socketio = SocketIO(app)
 
 conn = sqlite3.connect('database.db')
 c = conn.cursor()
@@ -56,6 +58,10 @@ def get_confessions(college, number):
 
     return jsonify(confs)
 
+@socketio.on('tx-msg', namespace='/uplyft-msg')
+def start_audio_tx(msg_txt):
+    emit('rx-msg', msg_txt, broadcast=True)
+
 def run_sentiment(college):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
@@ -72,4 +78,4 @@ def run_sentiment(college):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run()
+    socketio.run(app, host='0.0.0.0')

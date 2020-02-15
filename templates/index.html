@@ -16,11 +16,11 @@
 }
 
 #states :hover {
-  fill: yellow;
+  fill: #39d6ce;
 }
 
 #states .active {
-  fill: red;
+  fill: #39d6ce;
 }
 
 
@@ -33,10 +33,60 @@
   pointer-events: none;
 }
 
+li:nth-child(odd) { background: #D3D3D3; }
+
 </style>
 
 <body>
-    <svg width="0" height="0"></svg>
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card" style="width: 18rem; height: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">Social Feed</h5>
+              <ul class="card-text pre-scrollable list-unstyled" id="messages">
+                <li>Someone loves you!</li>
+                <li>You're not your mistakes</li>
+                <li>Sex is great</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <form action="">
+                <div class="form-row align-items-center">
+                  <div class="col-auto">
+                    <label class="sr-only" for="m">Send message</label>
+                    <input type="text" class="form-control mb-2" id="m" placeholder="Uplyft someone...">
+                  </div>
+                  <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-paper-plane"></i></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9" id="map_div">
+        </div>
+      </div>
+    </div>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="{{ url_for('static', filename='app.js')}}"></script>    
