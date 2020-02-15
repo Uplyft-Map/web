@@ -35,6 +35,7 @@ g.append("path")
 .attr("d", path);
 
 // add circles to svg
+//latitude longitutde
 aa = [-73.9965, 40.7295];
 bb = [-79.9528342, 40.4502787];
     
