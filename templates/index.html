@@ -1,94 +1,97 @@
 <!DOCTYPE html>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-
-<head>
-    <title>Cannabis Affordability</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
 <style>
-    body {
-        /* https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2042056/2333/2333/m1/fpnw/wm1/31trava_pattern-.jpg?1482076852&s=46472efd8241e4ae94fc57758c953561 */
-        font-family: 'Roboto';
-        width: 60%;
-        margin: auto;
-    }
+.background {
+  fill: none;
+  pointer-events: all;
+}
 
-    h1 {
-        font-size: 2em;
-        color: #333;
-    }
+#states {
+  fill: #ddd;
+}
 
-    #info {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
+#states :hover {
+  fill: yellow;
+}
 
-    .states {
-        fill: #e5e5e5;
-        stroke: #fff;
-        stroke-width: 4px;
-        cursor: pointer;
-    }
+#states .active {
+  fill: red;
+}
 
-    .states:hover {
-        fill: #fff;
-    }
 
-    .darkGreen {
-        fill: #355A20;
-    }
+#state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
 
-    .mediumGreen {
-        fill: #7BAA47;
-    }
-
-    .lightGreen {
-        fill: #93CB56;
-    }
-
-    .w3-container {
-        margin-top: 40px;
-    }
-
-    .centered {
-        text-align: center;
-        font-size: 40px;
-    }
-
-    .flip {
-        -moz-transform: scaleX(-1);
-        -o-transform: scaleX(-1);
-        -webkit-transform: scaleX(-1);
-        transform: scaleX(-1);
-        filter: FlipH;
-        -ms-filter: "FlipH";
-    }
 </style>
+<svg width="960" height="800"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script>
+var width = 960, height = 650, centered;
 
-<body>
-    <div class="w3-container">
-        <h1 class="centered"><img height="100" class="flip"
-                src="https://i1.kym-cdn.com/photos/images/original/000/550/467/036.gif"> Cannabis Affordability <img
-                height="100" src="https://i1.kym-cdn.com/photos/images/original/000/550/467/036.gif"></h1>
-        <label>Color by:</label>
-        <select name="mapType" id="mapType">
-            <option value="ratio">Cannabis Affordability</option>
-            <option value="price">Cannabis Price</option>
-            <option value="income">Median Income</option>
-        </select>
-        <h2 class="centered"> Darker the green, the more affordable it is. </h2>
-        <div id="map"></div>
-        <h2 id="title"></h2>
-        <p id="income"></p>
-        <p id="price"></p>
-        <p id="affordability"></p>
-        <p id="gini"></p>
-    </div>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://d3js.org/topojson.v1.min.js"></script>
-    <script type="text/javascript" src="/templates/app.js"></script>
-</body>
+// var projection = d3.geoAlbersUsa()
+//  .scale(1070)
+//  .translate([width / 2, height / 2]);
 
-</html>
+var path = d3.geoPath();
+// .projection(projection);
+
+var svg = d3.select("body").append("svg")
+         .attr("width", width)
+         .attr("height", height);
+
+svg.append("rect")
+.attr("class", "background")
+.attr("width", width)
+.attr("height", height)
+.on("click", clicked);
+
+var g = svg.append("g");
+
+d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+if (error) throw error;
+
+g.append("g")
+.attr("id", "states")
+.selectAll("path")
+.data(topojson.feature(us, us.objects.states).features)
+.enter().append("path")
+.attr("d", path)
+.on("click", clicked);
+
+g.append("path")
+.datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+.attr("id", "state-borders")
+.attr("d", path);
+});
+
+function clicked(d) {
+var x, y, k;
+
+if (d && centered !== d) {
+ var centroid = path.centroid(d);
+ x = centroid[0];
+ y = centroid[1];
+ k = 4;
+ centered = d;
+} else {
+ x = width / 2;
+ y = height / 2;
+ k = 1;
+ centered = null;
+}
+
+g.selectAll("path")
+.classed("active", centered && function(d) { return d === centered; });
+
+g.transition()
+.duration(750)
+.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+.style("stroke-width", 1.5 / k + "px");
+}
+</script>
