@@ -108,6 +108,9 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 });});
 
 function display_modal(college, depression, population, top_words) {
+    $("#exampleModal").find('.modal-title').text(college + " ("+(depression*10).toFixed(1)+" negative)");
+    $("#exampleModal").find('.modal-body').html("Loading...");
+    $("#exampleModal").modal("show");
     $.getJSON(API_URL+"getConfessions/"+college+"/3", function(data) {
         _display_modal(college, depression, population, top_words, data);
     });
