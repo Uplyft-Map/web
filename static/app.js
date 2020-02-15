@@ -108,7 +108,7 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 });});
 
 function display_modal(college, depression, population, top_words) {
-    $.getJSON(API_URL+"getConfessions/"+college+"/5", function(data) {
+    $.getJSON(API_URL+"getConfessions/"+college+"/3", function(data) {
         _display_modal(college, depression, population, top_words, data);
     });
 }
@@ -120,7 +120,11 @@ function _display_modal(college, depression, population, top_words, confessions)
     for (var i = 0; i < top_words.length; i++){
         links += ("<a href="+basic_link+top_words[i]+" target==\"blank\">"+top_words[i]+"</a>"+((i != (top_words.length-1))?", ":""))
     }
-    html_body = ("<p><strong>Students:</strong> "+population+"</p><p><strong>Common Words: </strong>"+links+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\"><li>"+confessions.join("</li><li>").replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****")+"</li></ul>")
+    var confs = "";
+    for (var i = 0; i < confessions.length; i++) {
+        confs += ("<li style=\"background: "+confessions[i][1]+";\">"+confessions[i][0]+"</li>");
+    }
+    html_body = ("<p><strong>Students:</strong> "+population+"</p><p><strong>Common Words: </strong>"+links+"</p><p><strong>Recent Confessions:</strong></p><ul class=\"list-unstyled\">"+confs.replace(/fuck|shit|bitch|cunt|dick|vagina/gi, "****")+"</ul>")
     $("#exampleModal").find('.modal-body').html(html_body);
     $("#exampleModal").modal("show");
 }
