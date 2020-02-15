@@ -10,7 +10,12 @@ $(function () {
       return false;
     });
     socket.on('rx-msg', function(msg){
-      $('#messages').prepend($('<li>').text(msg));
+      console.log(msg);
+      if (msg[1] != socket.io.engine.id) {
+        $('#messages').prepend($('<li>').text(msg[0]));
+      } else {
+        $('#messages').prepend($('<li style="background: #b3e6ff;">').text('Me: '+msg[0]));
+      }
     });
   });
 
