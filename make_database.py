@@ -6,6 +6,7 @@ import pandas as pd
 COLLEGE_CSV = 'school_confessions.csv'
 CONFESSION_PICKLE = 'fb-scraper/school_confessions.pickle'
 DEPRESSION_CSV = 'nlp/school_indices.csv'
+TOP_WORDS_CSV = 'nlp/top_words.csv'
 
 conn = sqlite3.connect('database.db')
 
@@ -18,6 +19,10 @@ cursor.execute("CREATE TABLE IF NOT EXISTS colleges (id INTEGER PRIMARY KEY AUTO
 # Create confession table
 cursor.execute("DROP TABLE IF EXISTS confessions")
 cursor.execute("CREATE TABLE IF NOT EXISTS confessions (id INTEGER PRIMARY KEY AUTOINCREMENT, college_id INTEGER, confession TEXT)")
+
+# Create confession table
+cursor.execute("DROP TABLE IF EXISTS top_words")
+cursor.execute("CREATE TABLE IF NOT EXISTS top_words (id INTEGER PRIMARY KEY AUTOINCREMENT, college_id INTEGER, word TEXT)")
 
 # Load CSV
 print("Loading CSV...")
@@ -49,11 +54,21 @@ for idx, row in a.iterrows():
     dep_score = row['Index']
     college = row['School']
     try:
-        resp = cursor.execute("SELECT confession FROM confessions INNER JOIN colleges s WHERE college_id = s.id AND name=?", (college,))
-
-        confs = [conf[0] for conf in resp.fetchall()]
-
         cursor.execute("UPDATE colleges SET depression=? WHERE name=?", (dep_score, college))
+    except:
+        continue
+
+conn.commit()
+
+print("Loading pandas (top words)")
+a = pd.read_csv(TOP_WORDS_CSV)
+for idx, row in a.iterrows():
+    word = row['Word']
+    college = row['School']
+    try:
+        school_id = cursor.execute(f"SELECT id FROM colleges WHERE name=\"{college}\"").fetchall()[0][0]
+
+        cursor.execute("INSERT INTO top_words (college_id, word) VALUES (?, ?)", (school_id, word))
     except:
         continue
 

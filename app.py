@@ -32,11 +32,14 @@ def get_data():
     coll_list = []
 
     for college in coll_resp:
+        top_words = cursor.execute("SELECT word FROM top_words INNER JOIN colleges s WHERE college_id = s.id AND name=?", (college[0], )).fetchall()
+
         d = {}
         d['name'] = college[0]
         d['size'] = college[1]
         d['coord'] = [-college[2], college[3]]
         d['depression'] = college[4]
+        d['top_words'] = [i[0] for i in top_words]
 
         coll_list.append(d)
 
