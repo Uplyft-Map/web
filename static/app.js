@@ -107,6 +107,15 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 
 });});
 
+function display_about(){
+    //console.log("pressed")
+    $("#exampleModal").find('.modal-title').text("About");
+    var about_page = "<p>Mental health is at the helm of issues pressing not only America, but the world. Despite growing community efforts to counteract this crisis, a staggering 19% of Americans experienced some form of a mental health issue in 2018. The goal of this project is to spread awareness about mental health, starting with depression among college students in the United States of America.</p><p>End users can use the map by clicking on any state (it zooms in) or by clicking on any schools bubble,  bringing up that school's corresponding mental health index and most recent tweets. In order to build an uplifting and supporting community, we have implemented a live feed chat that allows users to send encouraging quotes to all other users on the website. Based on the top phrases for each school's page, users can post tweets with hashtags of these phrases on their Twitter.</p> "
+    $("#exampleModal").find('.modal-body').html(about_page);
+    $("#exampleModal").modal("show");
+
+}
+
 function display_modal(college, depression, population, top_words) {
     $.getJSON(API_URL+"getConfessions/"+college+"/5", function(data) {
         _display_modal(college, depression, population, top_words, data);
@@ -115,7 +124,7 @@ function display_modal(college, depression, population, top_words) {
 
 function _display_modal(college, depression, population, top_words, confessions) {
     $("#exampleModal").find('.modal-title').text(college + " ("+(depression*10).toFixed(1)+" negative)");
-    var basic_link = "https://twitter.com/intent/tweet?url=https://uplyft.world&hashtags="
+    var basic_link = "https://twitter.com/intent/tweet?url=https://uplyft.world&hashtags=uplyft,"
     var links = ""
     for (var i = 0; i < top_words.length; i++){
         links += ("<a href="+basic_link+top_words[i]+" target==\"blank\">"+top_words[i]+"</a>"+((i != (top_words.length-1))?", ":""))
