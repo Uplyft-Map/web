@@ -38,6 +38,20 @@ def get_data():
 
     return jsonify(coll_list)
 
+@app.route('/getConfessions/<college>/<number>', methods=['GET'])
+def get_confessions(college, number):
+    num_recent = int(number)
+
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    resp = cursor.execute("SELECT confession FROM confessions WHERE id IN (SELECT c.id FROM confessions c INNER JOIN colleges s WHERE college_id = s.id and name=? ORDER BY RANDOM() LIMIT ?)", (college, num_recent))
+
+    confs = [conf[0] for conf in resp.fetchall()]
+
+    conn.close()
+
+    return jsonify(confs)
+
 def run_sentiment(college):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
