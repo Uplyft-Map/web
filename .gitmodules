@@ -1,3 +1,6 @@
 [submodule "fb-scraper"]
 	path = fb-scraper
 	url = https://github.com/Uplyft-Map/fb-scraper
+[submodule "nlp"]
+	path = nlp
+	url = https://github.com/Uplyft-Map/nlp

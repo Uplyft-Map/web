@@ -1,4 +1,3 @@
-from tqdm import tqdm
 import sqlite3
 import csv
 import pickle
