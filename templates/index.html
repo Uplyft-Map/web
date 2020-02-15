@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<head>
+    <title>Cannabis Affordability</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<style>
+    body {
+        /* https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2042056/2333/2333/m1/fpnw/wm1/31trava_pattern-.jpg?1482076852&s=46472efd8241e4ae94fc57758c953561 */
+        font-family: 'Roboto';
+        width: 60%;
+        margin: auto;
+    }
+
+    h1 {
+        font-size: 2em;
+        color: #333;
+    }
+
+    #info {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .states {
+        fill: #e5e5e5;
+        stroke: #fff;
+        stroke-width: 4px;
+        cursor: pointer;
+    }
+
+    .states:hover {
+        fill: #fff;
+    }
+
+    .darkGreen {
+        fill: #355A20;
+    }
+
+    .mediumGreen {
+        fill: #7BAA47;
+    }
+
+    .lightGreen {
+        fill: #93CB56;
+    }
+
+    .w3-container {
+        margin-top: 40px;
+    }
+
+    .centered {
+        text-align: center;
+        font-size: 40px;
+    }
+
+    .flip {
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+    }
+</style>
+
+<body>
+    <div class="w3-container">
+        <h1 class="centered"><img height="100" class="flip"
+                src="https://i1.kym-cdn.com/photos/images/original/000/550/467/036.gif"> Cannabis Affordability <img
+                height="100" src="https://i1.kym-cdn.com/photos/images/original/000/550/467/036.gif"></h1>
+        <label>Color by:</label>
+        <select name="mapType" id="mapType">
+            <option value="ratio">Cannabis Affordability</option>
+            <option value="price">Cannabis Price</option>
+            <option value="income">Median Income</option>
+        </select>
+        <h2 class="centered"> Darker the green, the more affordable it is. </h2>
+        <div id="map"></div>
+        <h2 id="title"></h2>
+        <p id="income"></p>
+        <p id="price"></p>
+        <p id="affordability"></p>
+        <p id="gini"></p>
+    </div>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script type="text/javascript" src="/templates/app.js"></script>
+</body>
+
+</html>
