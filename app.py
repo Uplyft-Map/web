@@ -3,7 +3,6 @@ from flask_socketio import SocketIO, emit, send, ConnectionRefusedError
 import sqlite3
 import logging
 
-from nlp.greenred import cool
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -54,11 +53,11 @@ def get_confessions(college, number):
     resp = cursor.execute("SELECT confession FROM confessions WHERE id IN (SELECT c.id FROM confessions c INNER JOIN colleges s WHERE college_id = s.id and name=? ORDER BY RANDOM() LIMIT ?)", (college, num_recent))
 
     confs = [conf[0] for conf in resp.fetchall()]
-    confs = list(zip(confs, cool(confs)))
+    confs = list(zip(confs, (confs)))
     print(confs)
 
     conn.close()
-
+    print(confs)
     return jsonify(confs)
 
 @socketio.on('tx-msg', namespace='/uplyft-msg')
